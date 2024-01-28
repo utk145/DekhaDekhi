@@ -1,0 +1,19 @@
+{
+  "name": "api-for-dekha-dekhi",
+  "version": "1.0.0",
+  "description": "server functionality for auth for react native video call app because getstream.io doesnt have built-in authentication functionality for users",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev":"nodemon index.js"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "expo",
+    "getstream.io",
+    "auth"
+  ],
+  "author": "utk",
+  "license": "ISC"
+}
