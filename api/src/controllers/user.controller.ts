@@ -1,5 +1,9 @@
 import { User } from "../models/user.models";
 import { asyncHandler } from "../utils/asyncHandler";
+import { StreamChat } from "stream-chat";
+
+const { STREAM_API_KEY, STREAM_API_SECRET } = process.env;
+const client = StreamChat.getInstance(STREAM_API_KEY!, STREAM_API_SECRET!)
 
 const registerUser = asyncHandler(async (req, res) => {
 
@@ -37,9 +41,19 @@ const registerUser = asyncHandler(async (req, res) => {
                 .json({ message: "Something went wrong while registering the user" })
         }
 
+        // creating user in Stream Chat
+        await client.upsertUser({
+            id: userCreated.id,
+            email: userCreated.email,
+            name: userCreated.email.split('@')[0] + "dekhais"
+        });
+
+        // create user for token
+        const token = client.createToken(userCreated.id)
+
         return res
             .status(201)
-            .json({ message: "User registered  successfully", userCreated })
+            .json({ message: "User registered  successfully", userCreated, token })
 
 
     } catch (error: any) {
