@@ -1,10 +1,10 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import { StreamChat } from 'stream-chat';
-import dotenv from "dotenv"
+// import dotenv from "dotenv" ; // Not required now as the fix is made in index.ts . Reference: https://stackoverflow.com/questions/62287709/environment-variable-with-dotenv-and-typescript 
 
 
-dotenv.config({ path: './.env' }); // if this is commented then the values are undefined; even though i am calling dotenv.config() in index.ts.**** Figure out why****
+// dotenv.config({ path: './.env' }); // if this is commented then the values are undefined; even though i am calling dotenv.config() in index.ts.**** Figure out why****
 const { STREAM_API_KEY, STREAM_API_SECRET } = process.env;
 
 
