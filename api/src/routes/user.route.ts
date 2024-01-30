@@ -90,4 +90,29 @@ userRouter.route("/register").post(async (req, res) => {
 });
 
 
+userRouter.route("/login").post(async (req, res) => {
+    const { email, password } = req.body;
+    const user = Users.find((user) => user.email === email);
+    const hashed_password = await bcrypt.hash(password, 10);
+
+    if (!user || user.hashed_password !== hashed_password) {
+        return res
+            .status(400)
+            .json({
+                message: 'Invalid credentials.',
+            });
+    }
+    // Create token for user
+    const token = client.createToken(user.id);
+
+    return res
+        .json({
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+            },
+        });
+})
+
 export default userRouter;
