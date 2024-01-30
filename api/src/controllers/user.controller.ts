@@ -65,5 +65,51 @@ const registerUser = asyncHandler(async (req, res) => {
 
 })
 
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res
+            .status(400)
+            .json({ message: "Both email and password are required" })
+    }
 
-export { registerUser };
+
+    if (password.length < 6) {
+        return res
+            .status(400)
+            .json({ message: "Length of the password must be atleast 6 characters" })
+    }
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (!existingUser) {
+            return res
+                .status(400)
+                .json({ message: "User doesn't exist" })
+        }
+
+        //@ts-ignore
+        const isPasswordCorrect = await existingUser.isPasswordCorrect(password);
+        if (!isPasswordCorrect) {
+            return res
+                .status(401)
+                .json({ message: "Password is invalid" })
+        };
+
+
+        const loggedInUser = await User.findById(existingUser._id).select("-password");
+        const token = client.createToken(existingUser.id);
+        return res
+            .status(200)
+            .json({ message: "User logged in successfully", token, user: loggedInUser })
+
+
+    } catch (error: any) {
+        res
+            .status(500)
+            .json({ error: error.message })
+    }
+
+})
+
+export { registerUser, loginUser };
