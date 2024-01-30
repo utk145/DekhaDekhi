@@ -2,7 +2,6 @@ import express from "express";
 
 
 
-const { STREAM_API_KEY, STREAM_API_SECRET } = process.env;
 
 const app = express();
 

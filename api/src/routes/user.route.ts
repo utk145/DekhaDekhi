@@ -1,5 +1,18 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
+import { StreamChat } from 'stream-chat';
+import dotenv from "dotenv"
+
+
+dotenv.config({ path: './.env' }); // if this is commented then the values are undefined; even though i am calling dotenv.config() in index.ts.**** Figure out why****
+const { STREAM_API_KEY, STREAM_API_SECRET } = process.env;
+
+
+// https://getstream.io/chat/docs/node/?language=javascript
+console.log("API Key:", STREAM_API_KEY);
+console.log("API Secret:", STREAM_API_SECRET);
+const client = StreamChat.getInstance(STREAM_API_KEY!, STREAM_API_SECRET!)
+
 
 const userRouter = Router();
 
@@ -50,7 +63,22 @@ userRouter.route("/register").post(async (req, res) => {
 
         Users.push(newUser);
         // console.log(Users);
-        
+
+
+        await client.upsertUser({
+            id: idRegistering,
+            email,
+            name: email
+        });
+
+        const token = client.createToken(newUser.id);
+
+        return res
+            .status(200)
+            .json({
+                token,
+                newUser
+            });
 
 
     } catch (error: any) {
