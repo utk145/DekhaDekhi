@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "outDir": "build",
+        "rootDir": "src/",
+        "allowSyntheticDefaultImports": true,
+        "allowImportingTsExtensions": true,
+        "strict": true,
+        "target": "es6",
+        "lib": [
+            "dom",
+            "esnext"
+        ],
+        "moduleResolution": "bundler", // Change to 'bundler'
+        "esModuleInterop": true,
+        "module": "ESNext",
+        "noEmit": true // Add this line
+    },
+    "extends": "ts-node/node16/tsconfig.json"
+}
